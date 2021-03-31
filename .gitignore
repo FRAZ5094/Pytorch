@@ -1,3 +1,5 @@
 /Tutorial/MNIST
 /Tutorial/PetImages/*
 /Tutorial/kagglecatsanddogs_3367a.zip
+/MNIST/*.csv
+/MNIST/training_data.npy
