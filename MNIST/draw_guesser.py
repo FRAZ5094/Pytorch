@@ -8,7 +8,7 @@ from MNIST_model import Net
 import matplotlib.pyplot as plt
 pygame.init()
 
-width=150
+width=140
 height=width
 
 screen = pygame.display.set_mode((width,height))
@@ -29,6 +29,7 @@ optimizer=optim.Adam(net.parameters(),lr=0.001)
 
 net.load_state_dict(loaded_checkpoint["model_state"])
 optimizer.load_state_dict(loaded_checkpoint["optim_state"])
+net.eval()
 net.to(device)
 
 pygame.display.update()
@@ -63,9 +64,13 @@ while 1:
 
                 array = np.array(pixels, dtype=np.uint8)
                 img = cv2.resize(array,(28,28))
+                #plt.imshow(img,cmap="gray")
+                #plt.show()
                 X=torch.Tensor(img).view(-1,28,28)
                 X=X.view(-1,1,28,28).to(device)
-                net_out=net(X)[0]
+
+                with torch.no_grad():
+                    net_out=net(X)[0]
                 predicted_class=torch.argmax(net_out)
                 print(f"{predicted_class}")
                 print(f"{net_out[predicted_class]*100}%")
